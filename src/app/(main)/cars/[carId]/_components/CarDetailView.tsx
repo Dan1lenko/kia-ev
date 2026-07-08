@@ -232,7 +232,7 @@ export default function CarDetailView({ car }: CarDetailViewProps) {
       <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-100 bg-white/95 p-3 backdrop-blur-md lg:static lg:mt-8 lg:border-0 lg:bg-transparent lg:p-0">
         <div className="mx-auto flex max-w-7xl gap-3 px-4 lg:px-8">
           <Link
-            href="#"
+            href={`/cars/${car.id}/select-distributor`}
             className="flex flex-1 items-center justify-center rounded-xl bg-primary py-3.5 text-sm font-bold text-white transition-all duration-200 hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 active:scale-[0.98]"
           >
             BOOK TEST DRIVE
