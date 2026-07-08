@@ -30,7 +30,7 @@ export default function BrandsSection() {
         {brands.map((brand) => (
           <Link
             key={brand.slug}
-            href={`/cars?brand=${brand.slug}`}
+            href={`/cars/brands/${brand.slug}`}
             className="group flex flex-col items-center gap-2 rounded-xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-primary/20 hover:shadow-md"
           >
             <div className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-gray-50 text-xs font-bold text-dark transition-all duration-200 group-hover:border-primary group-hover:text-primary lg:h-14 lg:w-14 lg:text-sm">
