@@ -1,9 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { mockStations } from "@/lib/mockStations";
+import dynamic from "next/dynamic";
+import { getUserFavoritesAction } from "@/app/(main)/ev/_actions/evActions";
+
+const StationMap = dynamic(
+  () => import("./StationMap"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-full w-full flex items-center justify-center bg-gray-50 text-xs font-semibold text-gray-400">
+        Завантаження інтерактивної карти...
+      </div>
+    ),
+  }
+);
 
 export default function NetworkClient() {
   const router = useRouter();
@@ -11,12 +25,20 @@ export default function NetworkClient() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<"nearby" | "recommended" | "recent" | "favorite">("nearby");
   const [stationType, setStationType] = useState<"public" | "private">("public");
+  const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    getUserFavoritesAction().then((ids) => {
+      setFavoriteIds(ids);
+    });
+  }, [activeTab]); // Refetch when tab changes to keep active
 
   const filteredStations = mockStations.filter((station) => {
     const matchesSearch = station.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           station.address.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesType = station.type === stationType;
-    return matchesSearch && matchesType;
+    const matchesTab = activeTab === "favorite" ? favoriteIds.includes(station.id) : true;
+    return matchesSearch && matchesType && matchesTab;
   });
 
   return (
@@ -27,7 +49,7 @@ export default function NetworkClient() {
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
           <input
             type="text"
-            placeholder="I am looking for..."
+            placeholder="Я шукаю..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full rounded-2xl border border-gray-200 bg-gray-50 py-3 pl-11 pr-4 text-sm text-dark placeholder:text-gray-400 focus:border-primary focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20"
@@ -42,21 +64,28 @@ export default function NetworkClient() {
         </Link>
       </div>
 
-      {/* Main Tabs Filters */}
       <div className="mt-4 flex gap-2 overflow-x-auto pb-2 scrollbar-none">
-        {(["nearby", "recommended", "recent", "favorite"] as const).map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`rounded-full px-5 py-2.5 text-xs font-bold uppercase transition-all duration-200 cursor-pointer ${
-              activeTab === tab
-                ? "bg-secondary text-dark shadow-sm"
-                : "bg-gray-150 text-gray-500 hover:bg-gray-200"
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
+        {(["nearby", "recommended", "recent", "favorite"] as const).map((tab) => {
+          const tabTranslations: Record<string, string> = {
+            nearby: "Поруч",
+            recommended: "Рекомендовані",
+            recent: "Нещодавні",
+            favorite: "Улюблені"
+          };
+          return (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`rounded-full px-5 py-2.5 text-xs font-bold uppercase transition-all duration-200 cursor-pointer ${
+                activeTab === tab
+                  ? "bg-secondary text-dark shadow-sm"
+                  : "bg-gray-150 text-gray-500 hover:bg-gray-200"
+              }`}
+            >
+              {tabTranslations[tab]}
+            </button>
+          );
+        })}
       </div>
 
       {/* Control Sub-Filters (Public/Private + Layout Toggles) */}
@@ -70,7 +99,7 @@ export default function NetworkClient() {
                 : "text-gray-500 hover:text-dark"
             }`}
           >
-            Public
+            Публічні
           </button>
           <button
             onClick={() => setStationType("private")}
@@ -80,7 +109,7 @@ export default function NetworkClient() {
                 : "text-gray-500 hover:text-dark"
             }`}
           >
-            Private
+            Приватні
           </button>
         </div>
 
@@ -97,7 +126,7 @@ export default function NetworkClient() {
           <button
             onClick={() => setViewMode(viewMode === "map" ? "list" : "map")}
             className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors shadow-sm font-semibold"
-            aria-label={viewMode === "map" ? "Switch to list view" : "Switch to map view"}
+            aria-label={viewMode === "map" ? "Перемкнути на список" : "Перемкнути на карту"}
           >
             {viewMode === "map" ? "📋" : "🗺️"}
           </button>
@@ -106,50 +135,8 @@ export default function NetworkClient() {
 
       {/* ── MAP VIEW ── */}
       {viewMode === "map" && (
-        <div className="relative mt-6 overflow-hidden rounded-3xl border border-gray-200 bg-gray-50 aspect-[4/5] md:aspect-[16/9]">
-          {/* Mock Map graphics */}
-          <div className="absolute inset-0 bg-white opacity-90" />
-          {/* Mock Road Grids */}
-          <div className="absolute left-1/3 top-0 h-full w-8 bg-gray-100 border-x border-gray-200/50" />
-          <div className="absolute left-2/3 top-0 h-full w-10 bg-gray-100 border-x border-gray-200/50" />
-          <div className="absolute top-1/3 left-0 w-full h-8 bg-gray-100 border-y border-gray-200/50" />
-          <div className="absolute top-2/3 left-0 w-full h-12 bg-gray-100 border-y border-gray-200/50" />
-
-          {/* Interactive Station Markers */}
-          {filteredStations.map((station) => (
-            <div
-              key={station.id}
-              className="absolute -translate-x-1/2 -translate-y-1/2 z-10"
-              style={{ left: `${station.longitude}%`, top: `${station.latitude}%` }}
-            >
-              {/* Highlight popups */}
-              <Link
-                href={`/ev/station/${station.id}`}
-                className="block bg-white border border-gray-100 rounded-xl p-2.5 shadow-lg w-40 text-center hover:scale-105 transition-transform animate-fade-in"
-              >
-                <p className="text-[10px] font-bold text-dark leading-tight line-clamp-1">
-                  {station.name}
-                </p>
-                <div className="mt-1 flex items-center justify-center gap-1 text-[9px] text-gray-500">
-                  <span>📍 {station.distance}</span>
-                  <span>•</span>
-                  <span>{station.timeText}</span>
-                </div>
-              </Link>
-              {/* Pulse Pin */}
-              <div className="mx-auto mt-2 h-7 w-7 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center animate-pulse">
-                <span className="text-[10px] text-white">⚡</span>
-              </div>
-            </div>
-          ))}
-
-          {/* Car Position Marker */}
-          <div className="absolute bottom-12 right-12 flex flex-col items-center">
-            <div className="rounded-full bg-yellow-400/30 p-4 border border-yellow-400/60 animate-ping absolute" />
-            <div className="relative rounded-2xl bg-dark text-white p-3 shadow-md flex items-center justify-center text-xs font-bold border border-yellow-400">
-              🚗 My EV
-            </div>
-          </div>
+        <div className="relative mt-6 overflow-hidden rounded-3xl border border-gray-200 bg-gray-50 aspect-[4/5] md:aspect-[16/9] z-0">
+          <StationMap stations={filteredStations} />
         </div>
       )}
 
@@ -184,10 +171,10 @@ export default function NetworkClient() {
                   <div className="flex gap-2">
                     {/* Feature icons */}
                     <span className="text-xs bg-gray-50 border border-gray-200 px-2 py-1 rounded-lg">
-                      📶 Free Wi-Fi
+                      📶 Безкоштовний Wi-Fi
                     </span>
                     <span className="text-xs bg-gray-50 border border-gray-200 px-2 py-1 rounded-lg">
-                      ♿ Accessible
+                      ♿ Зручний доступ
                     </span>
                   </div>
 
@@ -195,7 +182,7 @@ export default function NetworkClient() {
                     href={`/ev/station/${station.id}`}
                     className="rounded-xl bg-primary px-4 py-2 text-xs font-bold text-white transition-all hover:bg-primary-dark cursor-pointer active:scale-95"
                   >
-                    Slots Available
+                    Вільні слоти
                   </Link>
                 </div>
               </div>
@@ -205,7 +192,7 @@ export default function NetworkClient() {
           {filteredStations.length > 0 && (
             <div className="pt-4 text-center">
               <button className="text-xs font-bold uppercase tracking-wider text-gray-500 hover:text-dark cursor-pointer">
-                LOAD MORE &gt;&gt;
+                ЗАВАНТАЖИТИ ЩЕ &gt;&gt;
               </button>
             </div>
           )}

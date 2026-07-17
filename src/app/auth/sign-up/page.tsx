@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import SignUpForm from "../_components/SignUpForm";
 
 export const metadata: Metadata = {
-  title: "Sign Up",
-  description: "Create your KIA EV account to explore electric vehicles, find charging stations, and shop accessories.",
+  title: "Реєстрація | KIA EV",
+  description: "Створіть свій обліковий запис KIA EV, щоб переглядати електромобілі, бронювати зарядні станції та купувати аксесуари.",
 };
 
 export default function SignUpPage() {
-  return <SignUpForm />;
+  return (
+    <Suspense fallback={<div className="text-center py-12 text-[#9A9A9A] animate-pulse">Завантаження форми реєстрації...</div>}>
+      <SignUpForm />
+    </Suspense>
+  );
 }

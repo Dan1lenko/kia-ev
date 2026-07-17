@@ -2,21 +2,34 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import SocialLogin from "./SocialLogin";
+import { initiateSignUpAction } from "../_actions/auth";
 
 export default function SignUpForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect") || "";
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // TODO: Implement sign-up logic with Server Action
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsLoading(false);
+    setError("");
+
+    const res = await initiateSignUpAction(name, email, phone);
+    if (res?.error) {
+      setError(res.error);
+      setIsLoading(false);
+    } else if (res?.success && res.redirect) {
+      const redirectParam = redirect ? `&redirect=${encodeURIComponent(redirect)}` : "";
+      router.push(res.redirect + redirectParam);
+    }
   };
 
   const isFormValid = name.trim() && phone.trim() && email.trim() && agreed;
@@ -31,12 +44,17 @@ export default function SignUpForm() {
             KIA <span className="text-primary">EV</span>
           </h2>
         </div>
-        <h1 className="text-3xl font-bold text-dark">Welcome to WROOM</h1>
-        <p className="mt-2 text-gray-500">Create your account to get started</p>
+        <h1 className="text-3xl font-bold text-dark">Ласкаво просимо до WROOM</h1>
+        <p className="mt-2 text-gray-500">Створіть свій обліковий запис, щоб розпочати</p>
       </div>
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
+        {error && (
+          <div className="rounded-xl bg-red-50 border border-red-200 p-3.5 text-xs font-semibold text-red-600">
+            {error}
+          </div>
+        )}
         {/* Name */}
         <div className="group relative">
           <div className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-primary">
@@ -46,7 +64,7 @@ export default function SignUpForm() {
           </div>
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Ім'я"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-dark placeholder:text-gray-400 transition-all duration-[var(--transition-base)] focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20 focus:outline-none"
@@ -63,7 +81,7 @@ export default function SignUpForm() {
           </div>
           <input
             type="tel"
-            placeholder="Mobile Number"
+            placeholder="Номер телефону"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-dark placeholder:text-gray-400 transition-all duration-[var(--transition-base)] focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20 focus:outline-none"
@@ -101,10 +119,10 @@ export default function SignUpForm() {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
               </svg>
-              Creating Account...
+              Створення облікового запису...
             </span>
           ) : (
-            "Register Now"
+            "Зареєструватися зараз"
           )}
         </button>
 
@@ -114,7 +132,7 @@ export default function SignUpForm() {
             href="/"
             className="text-sm font-medium text-primary transition-colors hover:text-primary-dark"
           >
-            Skip for Now →
+            Пропустити зараз →
           </Link>
         </div>
       </form>
@@ -133,7 +151,7 @@ export default function SignUpForm() {
             className="mt-0.5 h-4 w-4 rounded border-gray-300 accent-primary"
           />
           <span className="text-sm text-gray-500">
-            Accept all the requirements that we have provided.
+            Я приймаю всі правила та умови сервісу.
           </span>
         </label>
       </div>
@@ -141,7 +159,7 @@ export default function SignUpForm() {
       {/* Divider */}
       <div className="mt-6 flex items-center gap-3">
         <div className="h-px flex-1 bg-gray-200" />
-        <span className="text-xs text-gray-400">Or continue with</span>
+        <span className="text-xs text-gray-400">Або продовжити через</span>
         <div className="h-px flex-1 bg-gray-200" />
       </div>
 
@@ -150,12 +168,12 @@ export default function SignUpForm() {
 
       {/* Switch to Sign In */}
       <p className="mt-8 text-center text-sm text-gray-500">
-        Already registered?{" "}
+        Вже зареєстровані?{" "}
         <Link
-          href="/auth/sign-in"
+          href={redirect ? `/auth/sign-in?redirect=${encodeURIComponent(redirect)}` : "/auth/sign-in"}
           className="font-semibold text-dark transition-colors hover:text-primary"
         >
-          Sign In
+          Увійти
         </Link>
       </p>
     </div>

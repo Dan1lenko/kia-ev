@@ -19,15 +19,14 @@ export default function ChargingBanner() {
           <div className="relative z-10 flex flex-col items-start gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h3 className="text-xl font-bold text-white lg:text-2xl">
-                There are 10 Charging Stations nearby
+                Поруч знаходиться 10 зарядних станцій
               </h3>
               <p className="mt-1 text-sm text-white/80 lg:text-base">
-                Nearest one is just 1 km away. Find and navigate to the closest
-                charging station.
+                Найближча розташована всього в 1 км. Знайдіть найближчу зарядну станцію та побудуйте маршрут.
               </p>
             </div>
             <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white/20 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 group-hover:bg-white group-hover:text-primary">
-              View Map
+              Переглянути на карті
               <svg className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
               </svg>

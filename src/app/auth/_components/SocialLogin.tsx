@@ -12,7 +12,7 @@ export default function SocialLogin() {
       <button
         onClick={() => handleSocialLogin("google")}
         className="flex h-14 w-14 cursor-pointer items-center justify-center rounded-2xl border border-gray-200 bg-white transition-all duration-[var(--transition-base)] hover:border-gray-300 hover:shadow-md active:scale-95"
-        aria-label="Continue with Google"
+        aria-label="Продовжити через Google"
         id="social-google"
       >
         <svg className="h-6 w-6" viewBox="0 0 24 24">
@@ -39,7 +39,7 @@ export default function SocialLogin() {
       <button
         onClick={() => handleSocialLogin("apple")}
         className="flex h-14 w-14 cursor-pointer items-center justify-center rounded-2xl bg-dark text-white transition-all duration-[var(--transition-base)] hover:bg-dark-light hover:shadow-md active:scale-95"
-        aria-label="Continue with Apple"
+        aria-label="Продовжити через Apple"
         id="social-apple"
       >
         <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -51,7 +51,7 @@ export default function SocialLogin() {
       <button
         onClick={() => handleSocialLogin("facebook")}
         className="flex h-14 w-14 cursor-pointer items-center justify-center rounded-2xl bg-[#1877F2] text-white transition-all duration-[var(--transition-base)] hover:bg-[#166FE5] hover:shadow-md active:scale-95"
-        aria-label="Continue with Facebook"
+        aria-label="Продовжити через Facebook"
         id="social-facebook"
       >
         <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">

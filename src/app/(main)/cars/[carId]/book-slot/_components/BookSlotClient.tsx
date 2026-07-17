@@ -66,19 +66,19 @@ export default function BookSlotClient({
             />
           </svg>
         </div>
-        <h1 className="mt-6 text-2xl font-bold text-dark">Slot Confirmed!</h1>
+        <h1 className="mt-6 text-2xl font-bold text-dark">Бронювання підтверджено!</h1>
         <p className="mt-2 text-sm text-gray-500 max-w-md">
-          Your slot at <span className="font-semibold">{dealer.name}</span> for a{" "}
-          {bookingLocation === "showroom" ? "Showroom Visit" : "Home Test Drive"}{" "}
-          on <span className="font-semibold">{selectedDate}</span> at{" "}
-          <span className="font-semibold">{selectedTime}</span> has been confirmed.
-          We will contact you shortly!
+          Ваш візит до <span className="font-semibold">{dealer.name}</span> для{" "}
+          {bookingLocation === "showroom" ? "відвідування автосалону" : "тест-драйву біля дому"}{" "}
+          на <span className="font-semibold">{selectedDate}</span> о{" "}
+          <span className="font-semibold">{selectedTime}</span> підтверджено.
+          Ми зв'яжемося з вами найближчим часом!
         </p>
         <button
           onClick={() => router.push("/cars")}
           className="mt-8 rounded-xl bg-primary px-8 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-primary-dark cursor-pointer"
         >
-          Back to Cars
+          Назад до автомобілів
         </button>
       </div>
     );
@@ -109,7 +109,7 @@ export default function BookSlotClient({
         </button>
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-xl font-bold text-white tracking-wider">
-            DEALER BOOKING
+            БРОНЮВАННЯ ДИЛЕРА
           </span>
         </div>
       </div>
@@ -133,7 +133,7 @@ export default function BookSlotClient({
             </svg>
           </div>
           <span className="absolute bottom-4 left-4 rounded-xl bg-black/60 px-4 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">
-            Showroom Interior
+            Інтер'єр автосалону
           </span>
         </div>
 
@@ -203,11 +203,11 @@ export default function BookSlotClient({
           {/* Quick options sidebar */}
           <div className="flex-1 flex flex-col gap-3">
             {[
-              "Request Callback",
-              "Finance",
-              "Online Consulting",
-              "Show Room Visit",
-              "Book Now",
+              "Замовити зворотний дзвінок",
+              "Кредитування / Фінанси",
+              "Онлайн-консультація",
+              "Візит до автосалону",
+              "Забронювати зараз",
             ].map((option) => (
               <button
                 key={option}
@@ -222,7 +222,7 @@ export default function BookSlotClient({
         {/* Slot booking module */}
         <div className="mt-8 border-t border-gray-100 pt-6">
           <h2 className="text-lg font-bold text-dark uppercase tracking-wider">
-            SLOT BOOKING
+            ВИБІР ЧАСУ ВІЗИТУ
           </h2>
 
           <div className="mt-4 flex flex-col gap-4">
@@ -236,7 +236,7 @@ export default function BookSlotClient({
                   onChange={() => setBookingLocation("showroom")}
                   className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
                 />
-                Show Room
+                Автосалон
               </label>
               <label className="flex items-center gap-2 text-sm font-semibold text-dark cursor-pointer">
                 <input
@@ -246,7 +246,7 @@ export default function BookSlotClient({
                   onChange={() => setBookingLocation("home")}
                   className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
                 />
-                Home
+                Тест-драйв вдома
               </label>
             </div>
 
@@ -255,7 +255,7 @@ export default function BookSlotClient({
               <span className="text-gray-400">📅</span>
               <div className="flex-1">
                 <span className="block text-[10px] text-gray-400 uppercase font-semibold">
-                  Date
+                  Дата
                 </span>
                 <input
                   type="date"
@@ -271,7 +271,7 @@ export default function BookSlotClient({
               <span className="text-gray-400">⏰</span>
               <div className="flex-1">
                 <span className="block text-[10px] text-gray-400 uppercase font-semibold">
-                  Time
+                  Час
                 </span>
                 <input
                   type="time"
@@ -288,13 +288,13 @@ export default function BookSlotClient({
                 onClick={handleConfirm}
                 className="flex-1 rounded-xl bg-primary py-3.5 text-sm font-bold text-white hover:bg-primary-dark transition-colors cursor-pointer active:scale-[0.98]"
               >
-                CONFIRM SLOT NOW
+                ПІДТВЕРДИТИ ЧАС
               </button>
               <button
                 className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-secondary py-3.5 text-sm font-bold text-white hover:bg-secondary-dark transition-colors cursor-pointer active:scale-[0.98]"
-                title="Contact customer support"
+                title="Зв'язатися з підтримкою"
               >
-                NEED HELP ?
+                ПОТРІБНА ДОПОМОГА ?
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-secondary font-bold text-xs">
                   ?
                 </span>

@@ -3,27 +3,27 @@ import Link from "next/link";
 const articles = [
   {
     id: 1,
-    tag: "NEW",
-    title: "The Electrifying New BMW iX",
-    category: "Review",
+    tag: "НОВЕ",
+    title: "Електризуючий новий BMW iX",
+    category: "Огляд",
   },
   {
     id: 2,
     tag: null,
-    title: "Test Drive: KIA EV6 GT",
-    category: "Test Drive",
+    title: "Тест-драйв: KIA EV6 GT",
+    category: "Тест-драйв",
   },
   {
     id: 3,
     tag: null,
-    title: "Sportscar Review: Best EVs 2025",
-    category: "Review",
+    title: "Огляд спорткарів: Найкращі EV 2025",
+    category: "Огляд",
   },
   {
     id: 4,
-    tag: "HOT",
-    title: "EV Charging Infrastructure Growth",
-    category: "News",
+    tag: "ГОРЯЧЕ",
+    title: "Розвиток інфраструктури EV зарядок",
+    category: "Новини",
   },
 ];
 
@@ -33,13 +33,13 @@ export default function EvClubSection() {
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold uppercase tracking-wide text-dark">
-            Explore EV Club
+            Дослідити EV Клуб
           </h2>
           <Link
             href="/ev-club"
             className="text-sm font-semibold text-primary transition-colors hover:text-primary-dark"
           >
-            View All →
+            Переглянути все →
           </Link>
         </div>
 

@@ -68,7 +68,7 @@ export default function SelectDistributorClient({
           </button>
           <div>
             <h1 className="text-lg font-bold text-dark">{car.name}</h1>
-            <p className="text-xs text-gray-500">Select Distributor</p>
+            <p className="text-xs text-gray-500">Оберіть дистриб'ютора</p>
           </div>
         </div>
 
@@ -96,7 +96,7 @@ export default function SelectDistributorClient({
             {car.name} GT line AWD
           </h2>
           <p className="text-xs font-bold uppercase tracking-wider text-gray-400">
-            PREFERRED SHOWROOM
+            БАЖАНИЙ САЛОН
           </p>
         </div>
 
@@ -107,25 +107,25 @@ export default function SelectDistributorClient({
           {/* Colusa Ave */}
           <div className="absolute left-1/2 top-0 h-full w-8 -translate-x-1/2 bg-gray-100/80 border-x border-gray-200/50 flex items-center justify-center">
             <span className="text-[9px] uppercase tracking-wider text-gray-400 rotate-90">
-              Colusa Ave
+              вул. Колуза
             </span>
           </div>
           {/* Santa Fe Ave */}
           <div className="absolute left-1/3 top-0 h-full w-6 -translate-x-1/2 bg-gray-100/50 border-x border-gray-200/20 flex items-center justify-center">
             <span className="text-[8px] uppercase tracking-wider text-gray-400 rotate-90">
-              Santa Fe Ave
+              вул. Санта Фе
             </span>
           </div>
           {/* Memorial Park */}
           <div className="absolute bottom-8 left-6 rounded-lg bg-green-50 border border-green-100 px-3 py-2 text-center shadow-sm">
             <span className="text-[10px] font-bold text-green-700">
-              Memorial Park
+              Парк Пам'яті
             </span>
           </div>
           {/* Thousand Oaks */}
           <div className="absolute right-12 bottom-16 text-center">
             <span className="text-[10px] font-bold tracking-wider text-gray-400 uppercase">
-              Thousand Oaks
+              Тисяча Дубів
             </span>
           </div>
 
@@ -257,7 +257,7 @@ export default function SelectDistributorClient({
             <div className="flex items-center gap-3">
               <button
                 className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-dark border border-gray-200 rounded-xl px-4 py-2.5 transition-colors cursor-pointer"
-                title="Get directions to the showroom"
+                title="Отримати маршрут до салону"
               >
                 <svg
                   className="h-4 w-4 text-primary"
@@ -277,14 +277,14 @@ export default function SelectDistributorClient({
                     d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
                   />
                 </svg>
-                Get Directions
+                Маршрут
               </button>
 
               <Link
                 href={`/cars/${car.id}/book-slot?dealer=${selectedShowroom.id}`}
                 className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-white transition-all duration-200 hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/20 active:scale-[0.98]"
               >
-                SELECT SLOTS
+                ОБРАТИ ЧАС
               </Link>
             </div>
           </div>

@@ -24,7 +24,7 @@ export default function AddVehicleClient() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!accepted) {
-      alert("Please accept the requirements first.");
+      alert("Будь ласка, спочатку прийміть умови.");
       return;
     }
     // Navigate to the next step: EV Network / Stations Search
@@ -45,7 +45,7 @@ export default function AddVehicleClient() {
           </svg>
         </button>
         <h1 className="text-xl font-bold uppercase tracking-wider text-dark">
-          ADD EV VEHICLE
+          ДОДАТИ ЕЛЕКТРОМОБІЛЬ
         </h1>
       </div>
 
@@ -54,12 +54,12 @@ export default function AddVehicleClient() {
         <div className="space-y-4">
           <div>
             <label htmlFor="car-maker" className="block text-xs font-semibold uppercase tracking-wider text-gray-400">
-              Car Maker
+              Виробник авто
             </label>
             <input
               id="car-maker"
               type="text"
-              placeholder="e.g. KIA"
+              placeholder="наприклад, KIA"
               value={maker}
               onChange={(e) => setMaker(e.target.value)}
               required
@@ -69,12 +69,12 @@ export default function AddVehicleClient() {
 
           <div>
             <label htmlFor="car-model" className="block text-xs font-semibold uppercase tracking-wider text-gray-400">
-              Car Model
+              Модель авто
             </label>
             <input
               id="car-model"
               type="text"
-              placeholder="e.g. EV6"
+              placeholder="наприклад, EV6"
               value={model}
               onChange={(e) => setModel(e.target.value)}
               required
@@ -84,12 +84,12 @@ export default function AddVehicleClient() {
 
           <div>
             <label htmlFor="vin" className="block text-xs font-semibold uppercase tracking-wider text-gray-400">
-              VIN
+              VIN-код
             </label>
             <input
               id="vin"
               type="text"
-              placeholder="Enter 17-digit VIN"
+              placeholder="Введіть 17-значний VIN-код"
               value={vin}
               onChange={(e) => setVin(e.target.value)}
               required
@@ -99,12 +99,12 @@ export default function AddVehicleClient() {
 
           <div>
             <label htmlFor="reg-number" className="block text-xs font-semibold uppercase tracking-wider text-gray-400">
-              Vehicle Registration Number
+              Державний реєстраційний номер
             </label>
             <input
               id="reg-number"
               type="text"
-              placeholder="e.g. DL 1CA 1234"
+              placeholder="наприклад, AA 1234 AB"
               value={regNumber}
               onChange={(e) => setRegNumber(e.target.value)}
               required
@@ -114,12 +114,12 @@ export default function AddVehicleClient() {
 
           <div>
             <label htmlFor="battery-capacity" className="block text-xs font-semibold uppercase tracking-wider text-gray-400">
-              Battery Capacity (kWh)
+              Ємність батареї (кВт·год)
             </label>
             <input
               id="battery-capacity"
               type="number"
-              placeholder="e.g. 77.4"
+              placeholder="наприклад, 77.4"
               value={battery}
               onChange={(e) => setBattery(e.target.value)}
               required
@@ -131,7 +131,7 @@ export default function AddVehicleClient() {
         {/* Plug in Type Section */}
         <div>
           <h2 className="text-sm font-bold uppercase tracking-wider text-dark">
-            PLUG IN TYPE
+            ТИП КОНЕКТОРА
           </h2>
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-5">
             {connectorTypes.map((plug) => {
@@ -160,7 +160,7 @@ export default function AddVehicleClient() {
         {/* Your Vehicle section with placeholder */}
         <div className="border-t border-gray-100 pt-6">
           <h2 className="text-sm font-bold uppercase tracking-wider text-dark">
-            YOUR VEHICLE
+            ВАШ АВТОМОБІЛЬ
           </h2>
           <div className="relative mt-4 overflow-hidden rounded-2xl border border-gray-100 bg-gradient-to-b from-gray-50 to-white py-10 flex items-center justify-center">
             {/* Visual car container */}
@@ -172,7 +172,7 @@ export default function AddVehicleClient() {
                 {maker || "KIA"} {model || "EV6"}
               </p>
               <p className="text-[10px] text-gray-400">
-                {regNumber || "No Reg Number"}
+                {regNumber || "Номер відсутній"}
               </p>
             </div>
           </div>
@@ -189,7 +189,7 @@ export default function AddVehicleClient() {
               className="mt-0.5 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
             />
             <span className="text-xs text-gray-500 leading-tight">
-              Accept all the requirements that we have provided for electric vehicle registration.
+              Я приймаю всі вимоги для реєстрації електромобіля.
             </span>
           </label>
 
@@ -197,7 +197,7 @@ export default function AddVehicleClient() {
             type="submit"
             className="w-full rounded-2xl bg-primary py-4 text-sm font-bold text-white transition-all duration-200 hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/20 active:scale-[0.98] cursor-pointer"
           >
-            ADD & SEARCH STATIONS
+            ДОДАТИ ТА ШУКАТИ СТАНЦІЇ
           </button>
         </div>
       </form>

@@ -2,11 +2,17 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { verifyOtpAction } from "../_actions/auth";
 
 const OTP_LENGTH = 4;
 const TIMER_SECONDS = 90;
 
 export default function OtpForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const credential = searchParams.get("credential") || "";
+  const [error, setError] = useState("");
   const [otp, setOtp] = useState<string[]>(Array(OTP_LENGTH).fill(""));
   const [timer, setTimer] = useState(TIMER_SECONDS);
   const [isLoading, setIsLoading] = useState(false);
@@ -83,9 +89,17 @@ export default function OtpForm() {
   const handleVerify = async () => {
     if (otp.some((digit) => !digit)) return;
     setIsLoading(true);
-    // TODO: Implement OTP verification with Server Action
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsLoading(false);
+    setError("");
+
+    const otpCode = otp.join("");
+    const res = await verifyOtpAction(credential, otpCode);
+    if (res?.error) {
+      setError(res.error);
+      setIsLoading(false);
+    } else if (res?.success) {
+      const redirectUrl = searchParams.get("redirect") || "/";
+      router.push(redirectUrl);
+    }
   };
 
   const isComplete = otp.every((digit) => digit !== "");
@@ -108,18 +122,26 @@ export default function OtpForm() {
         </div>
 
         <h1 className="text-3xl font-bold text-dark">
-          Enter 4-digit
+          Введіть 4-значний
           <br />
-          Verification code
+          Код підтвердження
         </h1>
         <p className="mt-3 text-sm text-gray-500">
-          Code sent to +91 82****89 and to your registered email. This code will
-          expire in{" "}
+          Код надіслано на <span className="font-semibold text-dark">{credential || "ваш пристрій"}</span>. Термін дії коду закінчиться через{" "}
           <span className="font-semibold text-primary">
             {formatTime(timer)}
           </span>
         </p>
+        <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-secondary/10 px-3.5 py-1 text-[11px] font-bold text-dark border border-secondary/20 select-none">
+          💡 Код для швидкого тестування: <span className="text-primary font-black tracking-wider text-xs">1234</span>
+        </div>
       </div>
+
+      {error && (
+        <div className="mb-6 rounded-xl bg-red-50 border border-red-200 p-3.5 text-xs font-semibold text-red-600 text-center animate-fade-in">
+          {error}
+        </div>
+      )}
 
       {/* OTP Inputs */}
       <div className="flex justify-center gap-4">
@@ -154,11 +176,11 @@ export default function OtpForm() {
             className="cursor-pointer text-sm font-semibold text-primary transition-colors hover:text-primary-dark"
             id="otp-resend"
           >
-            Resend OTP
+            Надіслати код повторно
           </button>
         ) : (
           <p className="text-sm text-gray-400">
-            Resend OTP in{" "}
+            Повторно надіслати код через{" "}
             <span className="font-medium text-primary">
               {formatTime(timer)}
             </span>
@@ -179,10 +201,10 @@ export default function OtpForm() {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
             </svg>
-            Verifying...
+            Перевірка...
           </span>
         ) : (
-          "Verify"
+          "Підтвердити"
         )}
       </button>
 
@@ -192,7 +214,7 @@ export default function OtpForm() {
           href="/auth/sign-in"
           className="font-medium text-gray-500 transition-colors hover:text-primary"
         >
-          ← Back to Sign In
+          ← Назад до входу
         </Link>
       </p>
     </div>

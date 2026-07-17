@@ -2,22 +2,22 @@ import Link from "next/link";
 
 const footerLinks = {
   explore: [
-    { href: "/cars", label: "Cars" },
-    { href: "/ev/network", label: "Charging Stations" },
-    { href: "/accessories", label: "Accessories" },
-    { href: "/cars/brands", label: "Compare Cars" },
+    { href: "/cars", label: "Автомобілі" },
+    { href: "/ev/network", label: "Зарядні станції" },
+    { href: "/accessories", label: "Аксесуари" },
+    { href: "/cars/brands", label: "Порівняння авто" },
   ],
   services: [
-    { href: "/ev/add-vehicle", label: "Add EV Vehicle" },
-    { href: "/ev/network", label: "EV Network" },
-    { href: "/profile/orders", label: "My Orders" },
-    { href: "/profile/referral", label: "Referral Program" },
+    { href: "/ev/add-vehicle", label: "Додати електромобіль" },
+    { href: "/ev/network", label: "Мережа зарядних станцій" },
+    { href: "/profile/orders", label: "Мої замовлення" },
+    { href: "/profile/referral", label: "Реферальна програма" },
   ],
   company: [
-    { href: "#", label: "About Us" },
-    { href: "#", label: "Contact" },
-    { href: "#", label: "Privacy Policy" },
-    { href: "#", label: "Terms of Service" },
+    { href: "#", label: "Про нас" },
+    { href: "#", label: "Контакти" },
+    { href: "#", label: "Політика конфіденційності" },
+    { href: "#", label: "Умови надання послуг" },
   ],
 };
 
@@ -35,8 +35,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-gray-400">
-              Discover the future of electric driving. Explore vehicles, find
-              charging stations, and shop accessories.
+              Відкрийте для себе майбутнє електромобільності. Досліджуйте автомобілі, знаходьте зарядні станції та купуйте аксесуари.
             </p>
             {/* Social links */}
             <div className="mt-6 flex gap-3">
@@ -54,7 +53,7 @@ export default function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               {footerLinks.explore.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="text-sm text-gray-400 transition-colors hover:text-primary"
@@ -73,7 +72,7 @@ export default function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               {footerLinks.services.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="text-sm text-gray-400 transition-colors hover:text-primary"
@@ -92,7 +91,7 @@ export default function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               {footerLinks.company.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="text-sm text-gray-400 transition-colors hover:text-primary"
@@ -109,8 +108,8 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-gray-700/50">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-gray-500 sm:flex-row lg:px-8">
-          <p>© {new Date().getFullYear()} KIA EV. All rights reserved.</p>
-          <p>Made with ⚡ for electric future</p>
+          <p>© {new Date().getFullYear()} KIA EV. Усі права захищено.</p>
+          <p>Створено з ⚡ для електричного майбутнього</p>
         </div>
       </div>
     </footer>

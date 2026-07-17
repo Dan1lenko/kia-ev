@@ -14,7 +14,7 @@ export default function SearchBar() {
       </div>
       <input
         type="text"
-        placeholder="I am looking for..."
+        placeholder="Я шукаю..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         className="w-full rounded-2xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-dark placeholder:text-gray-400 transition-all duration-200 focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20 focus:outline-none"

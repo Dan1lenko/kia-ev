@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Authentication",
-  description: "Sign in or create an account to access KIA EV services.",
+  title: "Автентифікація",
+  description: "Увійдіть або створіть обліковий запис для доступу до сервісів KIA EV.",
 };
 
 export default function AuthLayout({
@@ -29,8 +29,7 @@ export default function AuthLayout({
             <div className="mt-2 h-1 w-16 mx-auto rounded-full bg-gradient-to-r from-primary to-secondary" />
           </div>
           <p className="text-xl text-gray-600 leading-relaxed">
-            Discover the future of electric driving. Explore vehicles, find
-            charging stations, and shop accessories.
+            Відкрийте для себе майбутнє електромобільності. Досліджуйте автомобілі, знаходьте зарядні станції та купуйте аксесуари.
           </p>
 
           {/* Feature highlights */}
@@ -42,8 +41,8 @@ export default function AuthLayout({
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-semibold text-dark">EV Network</p>
-                <p className="text-xs text-gray-500">Find charging stations</p>
+                <p className="text-sm font-semibold text-dark">Мережа зарядних станцій</p>
+                <p className="text-xs text-gray-500">Знаходьте зарядки поруч</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -53,8 +52,8 @@ export default function AuthLayout({
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-semibold text-dark">Compare Cars</p>
-                <p className="text-xs text-gray-500">Make smart choices</p>
+                <p className="text-sm font-semibold text-dark">Порівняння авто</p>
+                <p className="text-xs text-gray-500">Розумний вибір моделей</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -64,8 +63,8 @@ export default function AuthLayout({
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-semibold text-dark">Accessories</p>
-                <p className="text-xs text-gray-500">Shop premium parts</p>
+                <p className="text-sm font-semibold text-dark">Аксесуари</p>
+                <p className="text-xs text-gray-500">Купуйте преміум запчастини</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -75,8 +74,8 @@ export default function AuthLayout({
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-semibold text-dark">Book Slots</p>
-                <p className="text-xs text-gray-500">Schedule test drives</p>
+                <p className="text-sm font-semibold text-dark">Бронювання тест-драйвів</p>
+                <p className="text-xs text-gray-500">Плануйте поїздки заздалегідь</p>
               </div>
             </div>
           </div>

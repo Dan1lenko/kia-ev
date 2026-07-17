@@ -13,11 +13,11 @@ export default function CarDetailView({ car }: CarDetailViewProps) {
   const [expandedVariant, setExpandedVariant] = useState<string | null>(null);
 
   const specs = [
-    { label: "Weight", value: car.specs.weight, icon: WeightIcon },
-    { label: "Electric range", value: car.specs.range, icon: RangeIcon },
-    { label: "Top Speed", value: car.specs.topSpeed, icon: SpeedIcon },
-    { label: "0-100mph", value: car.specs.acceleration, icon: AccelIcon },
-    { label: "Power", value: car.specs.power, icon: PowerIcon },
+    { label: "Вага", value: car.specs.weight, icon: WeightIcon },
+    { label: "Запас ходу", value: car.specs.range, icon: RangeIcon },
+    { label: "Макс. швидкість", value: car.specs.topSpeed, icon: SpeedIcon },
+    { label: "0-100 км/год", value: car.specs.acceleration, icon: AccelIcon },
+    { label: "Потужність", value: car.specs.power, icon: PowerIcon },
   ];
 
   return (
@@ -55,7 +55,7 @@ export default function CarDetailView({ car }: CarDetailViewProps) {
                   {car.brand}
                 </span>
                 <span className="block text-[10px] text-gray-500">
-                  EXPERIENCE
+                  ІННОВАЦІЇ
                 </span>
               </div>
             </div>
@@ -83,8 +83,8 @@ export default function CarDetailView({ car }: CarDetailViewProps) {
                   ${car.price.toLocaleString()}
                 </p>
                 <p className="mt-0.5 text-sm text-gray-500">
-                  On-Road Price in{" "}
-                  <span className="font-semibold text-primary">Delhi</span> 📍
+                  Ціна «під ключ» в{" "}
+                  <span className="font-semibold text-primary">Києві</span> 📍
                 </p>
               </div>
               <div className="text-right">
@@ -104,7 +104,7 @@ export default function CarDetailView({ car }: CarDetailViewProps) {
                     </svg>
                   ))}
                 </div>
-                <p className="mt-1 text-xs text-gray-500">Over all Rating</p>
+                <p className="mt-1 text-xs text-gray-500">Загальний рейтинг</p>
               </div>
             </div>
 
@@ -144,7 +144,7 @@ export default function CarDetailView({ car }: CarDetailViewProps) {
             {/* Variants */}
             <div className="mt-8">
               <h2 className="text-lg font-bold uppercase tracking-wide text-dark">
-                Variant
+                Комплектації
               </h2>
               <div className="mt-4 space-y-3">
                 {car.variants.map((variant) => (
@@ -198,15 +198,15 @@ export default function CarDetailView({ car }: CarDetailViewProps) {
                     {expandedVariant === variant.id && (
                       <div className="animate-fade-in border-t border-gray-100 bg-gray-50 p-4">
                         <p className="text-sm text-gray-600">
-                          The {variant.name} comes with {variant.transmission}{" "}
-                          transmission and {variant.fuelType} powertrain.
-                          Starting at ${variant.price.toLocaleString()}.
+                          Версія {variant.name} оснащена коробкою передач {variant.transmission}{" "}
+                          та двигуном {variant.fuelType}.
+                          Ціна починається від ${variant.price.toLocaleString()}.
                         </p>
                         <Link
                           href="#"
                           className="mt-3 inline-flex text-sm font-semibold text-primary hover:text-primary-dark"
                         >
-                          Get On Road Price →
+                          Ціна «під ключ» →
                         </Link>
                       </div>
                     )}
@@ -218,7 +218,7 @@ export default function CarDetailView({ car }: CarDetailViewProps) {
             {/* Description */}
             <div className="mt-8">
               <h2 className="text-lg font-bold uppercase tracking-wide text-dark">
-                In Detail
+                Детальний опис
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-gray-600">
                 {car.description}
@@ -235,13 +235,13 @@ export default function CarDetailView({ car }: CarDetailViewProps) {
             href={`/cars/${car.id}/select-distributor`}
             className="flex flex-1 items-center justify-center rounded-xl bg-primary py-3.5 text-sm font-bold text-white transition-all duration-200 hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 active:scale-[0.98]"
           >
-            BOOK TEST DRIVE
+            ЗАБРОНЮВАТИ ТЕСТ-ДРАЙВ
           </Link>
           <Link
             href="#"
             className="flex flex-1 items-center justify-center rounded-xl bg-dark py-3.5 text-sm font-bold text-white transition-all duration-200 hover:bg-dark-light active:scale-[0.98]"
           >
-            BUY NOW
+            КУПИТИ ЗАРАЗ
           </Link>
         </div>
       </div>

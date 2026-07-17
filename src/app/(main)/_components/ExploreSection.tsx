@@ -3,7 +3,7 @@ import Link from "next/link";
 const exploreItems = [
   {
     href: "/cars",
-    label: "Cars",
+    label: "Автомобілі",
     color: "bg-secondary",
     icon: (
       <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -13,7 +13,7 @@ const exploreItems = [
   },
   {
     href: "/ev/network",
-    label: "Charging Stations",
+    label: "Зарядні станції",
     color: "bg-primary",
     icon: (
       <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -23,7 +23,7 @@ const exploreItems = [
   },
   {
     href: "/accessories",
-    label: "Accessories",
+    label: "Аксесуари",
     color: "bg-primary",
     icon: (
       <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -33,7 +33,7 @@ const exploreItems = [
   },
   {
     href: "/cars/brands",
-    label: "Compare Cars",
+    label: "Порівняння авто",
     color: "bg-primary",
     icon: (
       <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -48,7 +48,7 @@ export default function ExploreSection() {
     <section className="py-12 lg:py-16">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <h2 className="text-2xl font-bold uppercase tracking-wide text-dark">
-          Explore
+          Дослідити
         </h2>
 
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:gap-6">

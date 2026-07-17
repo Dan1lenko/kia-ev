@@ -6,9 +6,9 @@ import EvClubSection from "./_components/EvClubSection";
 import OffersSection from "./_components/OffersSection";
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: "Головна",
   description:
-    "Explore KIA electric vehicles, find charging stations, shop accessories and compare cars.",
+    "Досліджуйте електромобілі KIA, знаходьте зарядні станції, купуйте аксесуари та порівнюйте автомобілі.",
 };
 
 export default function HomePage() {

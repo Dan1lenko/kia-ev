@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getStationById } from "@/lib/mockStations";
 
+import { createBookingAction } from "@/app/(main)/ev/_actions/evActions";
+
 export default function PaymentClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -33,14 +35,33 @@ export default function PaymentClient() {
   const discount = useCoins ? 1.0 : 0.0;
   const finalPrice = totalOriginal - discount;
 
-  const handlePay = () => {
-    // Navigate to booked page and pass details
+  const handlePay = async () => {
+    const res = await createBookingAction({
+      stationId,
+      stationName: station.name,
+      arriveTime: arrive,
+      duration: durationParam,
+      totalPrice: finalPrice,
+      paymentMethod: activeMethod === "card" ? "Credit Card" : activeMethod,
+    });
+
+    if (res.error) {
+      alert(res.error);
+      if (res.error.includes("авторизуватися")) {
+        const currentUrl = window.location.pathname + window.location.search;
+        router.push(`/auth/sign-in?redirect=${encodeURIComponent(currentUrl)}`);
+      }
+      return;
+    }
+
+    // Navigate to booked page and pass details plus the bookingId
     router.push(
       `/ev/booked?stationId=${stationId}&arrive=${arrive}&duration=${durationParam}&total=${finalPrice.toFixed(
         2
-      )}&method=${activeMethod === "card" ? "Credit Card" : activeMethod}`
+      )}&method=${activeMethod === "card" ? "Credit Card" : activeMethod}&bookingId=${res.bookingId}`
     );
   };
+
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
@@ -55,7 +76,7 @@ export default function PaymentClient() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
         </button>
-        <h1 className="text-base font-bold text-dark">Order Details</h1>
+        <h1 className="text-base font-bold text-dark">Деталі замовлення</h1>
       </div>
 
       {/* Order Summary Card */}
@@ -63,12 +84,12 @@ export default function PaymentClient() {
         <div className="flex items-center justify-between border-b border-gray-50 pb-4">
           <div>
             <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-              Order ID
+              ID замовлення
             </span>
             <span className="text-xs font-bold text-dark">BEOS091234</span>
           </div>
           <button className="text-xs font-bold text-red-500 hover:text-red-600 cursor-pointer">
-            Remove
+            Видалити
           </button>
         </div>
 
@@ -78,7 +99,7 @@ export default function PaymentClient() {
               {station.name}
             </h3>
             <p className="mt-1 text-xs text-gray-500">
-              Arrive: Today {arrive} ({durationParam === "1.5" ? "1hr 30min" : `${durationParam} hours`})
+              Прибуття: сьогодні о {arrive} ({durationParam === "1.5" ? "1 год 30 хв" : `${durationParam} год`})
             </p>
           </div>
           <span className="text-lg font-black text-primary">
@@ -99,11 +120,11 @@ export default function PaymentClient() {
               className="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary accent-primary cursor-pointer"
             />
             <label htmlFor="use-coins" className="text-xs font-bold text-dark cursor-pointer">
-              400 Coins Applied (-$1.00)
+              Застосовано 400 монет (-$1.00)
             </label>
           </div>
           <span className="text-xs font-bold text-primary hover:underline cursor-pointer">
-            View More Offers
+            Більше пропозицій
           </span>
         </div>
       </div>
@@ -111,20 +132,20 @@ export default function PaymentClient() {
       {/* Bill Details */}
       <div className="mt-6 rounded-3xl border border-gray-150 bg-white p-5 shadow-sm space-y-3">
         <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">
-          Bill Details
+          Деталі рахунку
         </h3>
         <div className="flex justify-between text-xs text-gray-600">
-          <span>Order Total</span>
+          <span>Сума замовлення</span>
           <span>${totalOriginal.toFixed(2)}</span>
         </div>
         {useCoins && (
           <div className="flex justify-between text-xs text-green-600 font-medium">
-            <span>Coins/Coupon Applied</span>
+            <span>Застосовано знижку</span>
             <span>-$1.00</span>
           </div>
         )}
         <div className="border-t border-gray-50 pt-3 flex justify-between text-sm font-black text-dark">
-          <span>Total Payable</span>
+          <span>Всього до сплати</span>
           <span className="text-primary">${finalPrice.toFixed(2)}</span>
         </div>
       </div>
@@ -132,7 +153,7 @@ export default function PaymentClient() {
       {/* Payment Options Accordion */}
       <div className="mt-8 space-y-3">
         <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">
-          Payment Method
+          Спосіб оплати
         </h3>
 
         {/* Card Option */}
@@ -142,7 +163,7 @@ export default function PaymentClient() {
             className="w-full px-5 py-4 flex items-center justify-between text-left cursor-pointer"
           >
             <span className="text-xs font-bold text-dark flex items-center gap-2">
-              💳 Credit / Debit Card
+              💳 Кредитна / Дебетова картка
             </span>
             <span className="text-xs">{activeMethod === "card" ? "▼" : "▶"}</span>
           </button>
@@ -150,7 +171,7 @@ export default function PaymentClient() {
             <div className="px-5 pb-5 pt-2 border-t border-gray-50 space-y-4">
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400">
-                  Card Holder Name
+                  Ім'я власника картки
                 </label>
                 <input
                   type="text"
@@ -163,7 +184,7 @@ export default function PaymentClient() {
               <div className="grid grid-cols-3 gap-3">
                 <div className="col-span-2">
                   <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400">
-                    Card Number
+                    Номер картки
                   </label>
                   <input
                     type="text"
@@ -174,7 +195,7 @@ export default function PaymentClient() {
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400">
-                    Expiry / CVV
+                    Термін дії / CVV
                   </label>
                   <div className="flex gap-1.5">
                     <input
@@ -203,7 +224,7 @@ export default function PaymentClient() {
             className="w-full px-5 py-4 flex items-center justify-between text-left cursor-pointer"
           >
             <span className="text-xs font-bold text-dark flex items-center gap-2">
-              👛 Wallet
+              👛 Електронний гаманець
             </span>
             <span className="text-xs">{activeMethod === "wallet" ? "▼" : "▶"}</span>
           </button>
@@ -216,7 +237,7 @@ export default function PaymentClient() {
             className="w-full px-5 py-4 flex items-center justify-between text-left cursor-pointer"
           >
             <span className="text-xs font-bold text-dark flex items-center gap-2">
-              💵 Cash at Station
+              💵 Готівка на станції
             </span>
             <span className="text-xs">{activeMethod === "cash" ? "▼" : "▶"}</span>
           </button>
@@ -241,7 +262,7 @@ export default function PaymentClient() {
         onClick={handlePay}
         className="mt-8 w-full rounded-2xl bg-primary py-4 text-sm font-bold text-white transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/20 active:scale-[0.98] cursor-pointer"
       >
-        PAYMENT
+        ОПЛАТИТИ
       </button>
     </div>
   );

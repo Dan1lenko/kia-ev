@@ -3,7 +3,7 @@ import Link from "next/link";
 const carTypes = [
   {
     slug: "sedan",
-    label: "Sedan",
+    label: "Седан",
     color: "bg-secondary",
     icon: (
       <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -13,7 +13,7 @@ const carTypes = [
   },
   {
     slug: "hatchback",
-    label: "Hatchback",
+    label: "Хетчбек",
     color: "bg-primary",
     icon: (
       <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -23,7 +23,7 @@ const carTypes = [
   },
   {
     slug: "suv",
-    label: "SUV",
+    label: "Позашляховик",
     color: "bg-primary",
     icon: (
       <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -33,7 +33,7 @@ const carTypes = [
   },
   {
     slug: "muv",
-    label: "MUV",
+    label: "Мінівен",
     color: "bg-primary",
     icon: (
       <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -47,7 +47,7 @@ export default function CarTypesSection() {
   return (
     <section className="mt-8">
       <h2 className="text-lg font-bold uppercase tracking-wide text-dark">
-        I Prefer to Drive
+        Я надаю перевагу
       </h2>
 
       <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:gap-6">

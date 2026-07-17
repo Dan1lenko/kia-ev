@@ -16,13 +16,13 @@ export default function BrandsSection() {
     <section className="mt-10">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold uppercase tracking-wide text-dark">
-          Brand
+          Бренди
         </h2>
         <Link
           href="/cars/brands"
           className="text-sm font-semibold text-primary transition-colors hover:text-primary-dark"
         >
-          View All →
+          Усі бренди →
         </Link>
       </div>
 

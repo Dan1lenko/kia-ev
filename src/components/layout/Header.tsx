@@ -3,18 +3,35 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOutAction } from "@/app/auth/_actions/auth";
+
 
 const navLinks = [
-  { href: "/", label: "Home", icon: HomeIcon },
-  { href: "/cars", label: "Cars", icon: CarIcon },
-  { href: "/ev/network", label: "EV Charging", icon: ChargingIcon },
-  { href: "/accessories", label: "Accessories", icon: AccessoriesIcon },
-  { href: "/ev-club", label: "EV Club", icon: ClubIcon },
+  { href: "/", label: "Головна", icon: HomeIcon },
+  { href: "/cars", label: "Автомобілі", icon: CarIcon },
+  { href: "/ev/network", label: "Зарядка EV", icon: ChargingIcon },
+  { href: "/accessories", label: "Аксесуари", icon: AccessoriesIcon },
+  { href: "/ev-club", label: "EV Клуб", icon: ClubIcon },
 ];
 
-export default function Header() {
+interface HeaderProps {
+  user?: {
+    id: string;
+    name: string | null;
+    email: string;
+  } | null;
+}
+
+export default function Header({ user = null }: HeaderProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleLogout = async () => {
+    await signOutAction();
+    window.location.href = "/";
+  };
+
 
   return (
     <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur-md">
@@ -54,7 +71,7 @@ export default function Header() {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder="Пошук..."
                 className="w-48 rounded-full border border-gray-200 bg-gray-50 py-2 pl-9 pr-4 text-sm text-dark placeholder:text-gray-400 transition-all duration-200 focus:w-64 focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20 focus:outline-none"
                 id="header-search"
               />
@@ -72,15 +89,55 @@ export default function Header() {
             <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-primary" />
           </button>
 
-          {/* Profile */}
-          <Link
-            href="/profile"
-            className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-200 text-gray-500 transition-all duration-200 hover:border-primary hover:text-primary"
-            aria-label="Profile"
-            id="header-profile"
-          >
-            <UserIcon className="h-5 w-5" />
-          </Link>
+          {/* Profile / Auth */}
+          {user ? (
+            <div className="relative">
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50/50 p-1.5 pr-3 hover:border-primary/40 hover:bg-gray-50 transition-all duration-200 cursor-pointer"
+                id="header-profile"
+              >
+                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-xs select-none">
+                  {user.name ? user.name[0].toUpperCase() : user.email[0].toUpperCase()}
+                </div>
+                <span className="hidden md:block text-xs font-semibold text-gray-700">
+                  {user.name || "Користувач"}
+                </span>
+                <ChevronDownIcon className="h-3.5 w-3.5 text-gray-400" />
+              </button>
+
+              {dropdownOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setDropdownOpen(false)}
+                  />
+                  <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-xl border border-gray-100 bg-white p-1.5 shadow-lg ring-1 ring-black/5 animate-fade-in z-50">
+                    <div className="px-3 py-2.5 text-xs border-b border-gray-100 mb-1 select-none">
+                      <p className="font-semibold text-gray-800">{user.name || "Користувач"}</p>
+                      <p className="text-gray-400 truncate mt-0.5">{user.email}</p>
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer font-medium"
+                    >
+                      <LogoutIcon className="h-4 w-4" />
+                      <span>Вийти з акаунту</span>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          ) : (
+            <Link
+              href="/auth/sign-in"
+              className="flex items-center gap-1.5 rounded-lg bg-dark text-white px-4 py-2 text-xs font-bold hover:bg-primary transition-all duration-300 shadow-sm shadow-dark/10 hover:shadow-primary/20"
+              id="header-sign-in"
+            >
+              <UserIcon className="h-4 w-4" />
+              <span>Увійти</span>
+            </Link>
+          )}
 
           {/* Mobile menu toggle */}
           <button
@@ -193,6 +250,22 @@ function UserIcon({ className }: { className?: string }) {
   );
 }
 
+function ChevronDownIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+    </svg>
+  );
+}
+
+function LogoutIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+    </svg>
+  );
+}
+
 function MenuIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -208,3 +281,4 @@ function CloseIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+

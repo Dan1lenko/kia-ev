@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { ChargingStation } from "@/lib/mockStations";
+import { isStationFavoriteAction, toggleFavoriteAction } from "@/app/(main)/ev/_actions/evActions";
 
 interface StationDetailClientProps {
   station: ChargingStation;
@@ -13,6 +14,21 @@ export default function StationDetailClient({ station }: StationDetailClientProp
   const [liked, setLiked] = useState(false);
   const [arriveTime, setArriveTime] = useState("09:45");
   const [duration, setDuration] = useState("1.5"); // hours
+
+  useEffect(() => {
+    isStationFavoriteAction(station.id).then((isFav) => {
+      setLiked(isFav);
+    });
+  }, [station.id]);
+
+  const handleLike = async () => {
+    const res = await toggleFavoriteAction(station.id);
+    if (res.error) {
+      alert(res.error);
+    } else if (res.success !== undefined) {
+      setLiked(res.isFavorite ?? false);
+    }
+  };
 
   const handleBook = () => {
     router.push(`/ev/payment?stationId=${station.id}&arrive=${arriveTime}&duration=${duration}`);
@@ -33,13 +49,13 @@ export default function StationDetailClient({ station }: StationDetailClientProp
             </svg>
           </button>
           <div>
-            <h1 className="text-base font-bold text-dark">EV Station</h1>
+            <h1 className="text-base font-bold text-dark">Зарядна станція</h1>
             <p className="text-xs text-gray-500">ID: BEOS2023091</p>
           </div>
         </div>
 
         <button
-          onClick={() => setLiked(!liked)}
+          onClick={handleLike}
           className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border transition-all ${
             liked
               ? "border-red-200 bg-red-50 text-red-500 scale-105"
@@ -55,7 +71,7 @@ export default function StationDetailClient({ station }: StationDetailClientProp
       <div className="relative mt-6 overflow-hidden rounded-3xl bg-gray-150 aspect-[16/10] flex items-center justify-center border border-gray-200">
         <span className="text-5xl">🔌</span>
         <span className="absolute bottom-4 right-4 rounded-xl bg-black/60 px-3 py-1 text-xs font-semibold text-white">
-          Station Charger Port
+          Порт зарядної станції
         </span>
       </div>
 
@@ -71,10 +87,10 @@ export default function StationDetailClient({ station }: StationDetailClientProp
         <div className="mt-4 flex items-center justify-between">
           <div className="flex gap-2">
             <span className="text-xs bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-xl font-semibold text-gray-600">
-              📶 Free Wi-Fi
+              📶 Безкоштовний Wi-Fi
             </span>
             <span className="text-xs bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-xl font-semibold text-gray-600">
-              ♿ Accessible
+              ♿ Зручний доступ
             </span>
           </div>
           <div className="flex items-center gap-1.5 text-xs text-gray-500">
@@ -93,15 +109,15 @@ export default function StationDetailClient({ station }: StationDetailClientProp
       <div className="mt-6 grid grid-cols-3 gap-3 text-center">
         <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
           <span className="block text-xs font-bold text-dark">{station.connectionType}</span>
-          <span className="mt-1 block text-[10px] uppercase text-gray-400 font-bold">Connection</span>
+          <span className="mt-1 block text-[10px] uppercase text-gray-400 font-bold">Конектор</span>
         </div>
         <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
           <span className="block text-xs font-bold text-dark">${station.pricePerKwh}</span>
-          <span className="mt-1 block text-[10px] uppercase text-gray-400 font-bold">Per kWh</span>
+          <span className="mt-1 block text-[10px] uppercase text-gray-400 font-bold">за кВт·год</span>
         </div>
         <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
           <span className="block text-xs font-bold text-dark">${station.parkingFee.toFixed(2)}</span>
-          <span className="mt-1 block text-[10px] uppercase text-gray-400 font-bold">Parking Fee</span>
+          <span className="mt-1 block text-[10px] uppercase text-gray-400 font-bold">Плата за паркінг</span>
         </div>
       </div>
 
@@ -111,7 +127,7 @@ export default function StationDetailClient({ station }: StationDetailClientProp
           {/* Arrive */}
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-gray-400">
-              Arrive
+              Час прибуття
             </label>
             <input
               type="time"
@@ -124,18 +140,18 @@ export default function StationDetailClient({ station }: StationDetailClientProp
           {/* Duration */}
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-gray-400">
-              Duration
+              Тривалість
             </label>
             <select
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
               className="mt-2 w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm font-bold text-dark focus:border-primary focus:bg-white focus:outline-none"
             >
-              <option value="0.5">30 min</option>
-              <option value="1">1 hour</option>
-              <option value="1.5">1 hour 30 min</option>
-              <option value="2">2 hours</option>
-              <option value="3">3 hours</option>
+              <option value="0.5">30 хв</option>
+              <option value="1">1 година</option>
+              <option value="1.5">1 година 30 хв</option>
+              <option value="2">2 години</option>
+              <option value="3">3 години</option>
             </select>
           </div>
         </div>
@@ -146,7 +162,7 @@ export default function StationDetailClient({ station }: StationDetailClientProp
         onClick={handleBook}
         className="mt-8 w-full rounded-2xl bg-primary py-4 text-sm font-bold text-white transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/20 active:scale-[0.98] cursor-pointer"
       >
-        BOOK CHARGER
+        ЗАБРОНЮВАТИ ЗАРЯДКУ
       </button>
     </div>
   );

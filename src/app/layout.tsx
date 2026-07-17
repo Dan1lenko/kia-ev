@@ -11,11 +11,11 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: "KIA EV — Electric Vehicles",
+    default: "KIA EV — Електромобілі",
     template: "%s | KIA EV",
   },
   description:
-    "Explore KIA electric vehicles, charging stations, accessories and more.",
+    "Досліджуйте електромобілі KIA, зарядні станції, аксесуари та багато іншого.",
 };
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang="uk" data-scroll-behavior="smooth">
       <body className={`${poppins.variable} font-sans antialiased`}>
         {children}
       </body>
